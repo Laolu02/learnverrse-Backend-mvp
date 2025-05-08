@@ -6,7 +6,7 @@ visits the repo and clicks “Fork” on GitHub : https://github.com/learnverrse
    cd learnverrse-Backend-mvp
 
 3. Add Upstream Remote (Link to Original Repo)
-    git remote add upstream https://github.com/your-username/project-repo.git
+    git remote add upstream https://github.com/learnverrse/learnverrse-Backend-mvp.git
     git fetch upstream
 
 4. Create and Checkout a New Branch
