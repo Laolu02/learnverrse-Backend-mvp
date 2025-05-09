@@ -5,7 +5,7 @@ import { AccountProviderEnum } from '../enums/account-provider.enum.js';
 const accountSchema = mongoose.Schema(
   {
     userId: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
