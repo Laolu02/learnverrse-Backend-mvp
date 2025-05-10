@@ -22,6 +22,12 @@ const userSchema = new mongoose.Schema(
     age: {
       type: Number,
     },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpires: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );

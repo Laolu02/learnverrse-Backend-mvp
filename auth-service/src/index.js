@@ -8,7 +8,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import connectDb from './configs/database.config.js';
-import {router as authRoutes} from './routes/auth.routes.js';
+import authRoutes from './routes/auth.routes.js';
 
 import logger from './utils/logger.js';
 import errorHandler from './middlewares/errorHandler.middleware.js';
