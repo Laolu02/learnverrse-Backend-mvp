@@ -2,6 +2,7 @@ import { AccountProviderEnum } from '../enums/account-provider.enum.js';
 import { UserRoleEnum } from '../enums/user-role.enum.js';
 import AccountModel from '../model/account.model.js';
 import UserModel from '../model/user.model.js';
+import EducatorModel from '../model/educator.model.js';
 import { BadRequestException } from '../utils/appError.js';
 
 export const registerLearnerService = async (body) => {
@@ -41,5 +42,21 @@ export const registerLearnerService = async (body) => {
   } catch (error) {
     logger.error('Error registering new user');
     throw error;
+  }
+};
+export const registerEducatorService = async(body)=>{
+  const {email, name} = body;
+  try {
+    const ExistingEd = await EducatorModel.findOne({email});
+    if (ExistingEd) {
+      throw new BadRequestException('Account already exist');
+    }
+
+    const user = new EducatorModel({...req.body});
+    await user.save();
+    return (user);
+  } catch (error) {
+     logger.error('Error registering account')
+     throw (error)
   }
 };

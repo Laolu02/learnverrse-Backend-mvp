@@ -1,6 +1,6 @@
 import { HTTPSTATUS } from '../configs/http.config.js';
 import AsyncHandler from '../middlewares/asyncHandler.js';
-import { registerLearnerService } from '../services/register.service.js';
+import { registerLearnerService, registerEducatorService } from '../services/register.service.js';
 import { registerSchema } from '../validations/register.validation.js';
 
 export const registerLearnerController = AsyncHandler(
@@ -22,6 +22,18 @@ export const registerLearnerController = AsyncHandler(
     return res.status(HTTPSTATUS.CREATED).json({
       success: true,
       message: 'User created Successfully',
+    });
+  }
+);
+export const registereducatorController = AsyncHandler(
+  async(req,res,next)=>{
+    const body = registerSchema.parse({...req.body})
+
+    const user = await registerEducatorService(body);
+    //await user.save();
+    return res.status(HTTPSTATUS.CREATED).json({
+      message: 'Account created successfully',
+      success: true,
     });
   }
 );
