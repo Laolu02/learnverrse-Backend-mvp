@@ -9,10 +9,11 @@ const appConfig = () => ({
   GOOGLE_CLIENT_ID: getEnv('GOOGLE_CLIENT_ID'),
   GOOGLE_CLIENT_SECRET: getEnv('GOOGLE_CLIENT_SECRET'),
   GOOGLE_CALLBACK_URL: getEnv('GOOGLE_CALLBACK_URL'),
+  /* Ignore this: I simply commented out what I don't need
   ACCESS_TOKEN: getEnv('ACCESS_TOKEN'),
 
-  FRONTEND_ORIGIN: getEnv('FRONTEND_ORIGIN', 'localhost'),
-  FRONTEND_GOOGLE_CALLBACK_URL: getEnv('FRONTEND_GOOGLE_CALLBACK_URL'),
+   FRONTEND_ORIGIN: getEnv('FRONTEND_ORIGIN', 'localhost'),
+   FRONTEND_GOOGLE_CALLBACK_URL: getEnv('FRONTEND_GOOGLE_CALLBACK_URL'),*/ 
 });
 
 export const config = appConfig();
