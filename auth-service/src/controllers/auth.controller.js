@@ -5,7 +5,6 @@ import {
   registerEducatorService,
 } from '../services/register.service.js';
 import { registerSchema } from '../validations/auth.validation.js';
-import passport from 'passport';
 
 import generateJwt from '../utils/generateJwt.js';
 
@@ -44,11 +43,6 @@ export const registerEducatorController = AsyncHandler(
     });
   }
 );
-
-// Google registration/ login starter controller
-export const googleAuthController = passport.authenticate('google', {
-  scope: ['profile', 'email'],
-});
 
 // Google registration/ login callback controller
 
