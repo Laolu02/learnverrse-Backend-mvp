@@ -20,7 +20,6 @@ const refreshTokenSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const RefreshTokenModel =
-  mongoose.model < RefreshDocument > ('RefreshToken', refreshTokenSchema);
+const RefreshTokenModel = mongoose.model('RefreshToken', refreshTokenSchema);
 
 export default RefreshTokenModel;

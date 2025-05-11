@@ -1,26 +1,46 @@
 import mongoose from 'mongoose';
 
 import { comparePassword, hashPassword } from '../utils/argonPassword.js';
+import { UserRoleEnum } from '../enums/user-role.enum.js';
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    firstName: {
       type: String,
+      required: true,
+      trim: true,
     },
+    lastName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
     email: {
       type: String,
+      required: true,
+      trim: true,
     },
     password: {
       type: String,
     },
     role: {
       type: String,
+      enum: Object.values(UserRoleEnum),
+      default: 'LEARNER',
+      required: true,
+    },
+
+    isRoleVerified: {
+      type: Boolean,
+      required: true,
+      default: false, //An educator must have his role verified
     },
     profilePicture: {
       type: String,
     },
-    age: {
-      type: Number,
+    dateOfBirth: {
+      type: Date,
     },
   },
   { timestamps: true }

@@ -1,6 +1,26 @@
 import express from 'express';
-import { registerLearnerController } from '../controllers/register.controller.js';
+import {
+  registerLearnerController,
+  registerEducatorController,
+  googleAuthCallbackController,
+} from '../controllers/auth.controller.js';
 
 const router = express.Router();
 
+// Start Google OAuth
+router.get(
+  '/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+// Handle callback of Google Auth
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { session: false }),
+  googleAuthCallbackController
+);
+
+router.post('/register-educator', registerEducatorController);
 router.post('/register-learner', registerLearnerController);
+
+export default router;

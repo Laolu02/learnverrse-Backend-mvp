@@ -5,7 +5,7 @@ import UserModel from '../model/user.model.js';
 import { BadRequestException } from '../utils/appError.js';
 
 export const registerLearnerService = async (body) => {
-  const { email, name, password } = body;
+  const { email, firstName, lastName, password } = body;
 
   try {
     const isExisting = await UserModel.findOne({ email });
@@ -16,9 +16,50 @@ export const registerLearnerService = async (body) => {
     const user = new UserModel({
       email,
       password,
-      name,
-      age,
+      firstName,
+      lastName,
       role: UserRoleEnum.LEARNER,
+      isRoleVerified: true,
+    });
+
+    await user.save();
+
+    /* 
+    create an account for the user,
+
+    since the user register using email, the provider will be EMAIL
+    the providerId  will be the user email address
+    */
+    const account = new AccountModel({
+      userId: user._id,
+      provider: AccountProviderEnum.EMAIL,
+      providerId: email,
+    });
+
+    await account.save();
+
+    return { user };
+  } catch (error) {
+    logger.error('Error registering new user');
+    throw error;
+  }
+};
+
+export const registerEducatorService = async (body) => {
+  const { email, firstName, lastName, password } = body;
+
+  try {
+    const isExisting = await UserModel.findOne({ email });
+    if (isExisting) {
+      throw new BadRequestException('User already exist');
+    }
+
+    const user = new UserModel({
+      email,
+      password,
+      firstName,
+      lastName,
+      role: UserRoleEnum.EDUCATOR,
     });
 
     await user.save();

@@ -1,11 +1,11 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import { SubscriptionTypeEnum } from '../enums/subscription-type.enum.js';
 import { AccountProviderEnum } from '../enums/account-provider.enum.js';
 
 const accountSchema = mongoose.Schema(
   {
     userId: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
