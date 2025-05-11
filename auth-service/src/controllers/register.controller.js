@@ -4,9 +4,10 @@ import {
   registerLearnerService,
   registerEducatorService,
 } from '../services/register.service.js';
-import { registerSchema } from '../validations/register.validation.js';
+import { registerSchema } from '../validations/auth.validation.js';
 import passport from 'passport';
-import { handleGoogleAuth } from '../services/google-auth.service.js';
+
+import generateJwt from '../utils/generateJwt.js';
 
 // Regular registration controller
 export const registerLearnerController = AsyncHandler(
@@ -32,12 +33,11 @@ export const registerLearnerController = AsyncHandler(
   }
 );
 
-export const registereducatorController = AsyncHandler(
+export const registerEducatorController = AsyncHandler(
   async (req, res, next) => {
     const body = registerSchema.parse({ ...req.body });
 
     const user = await registerEducatorService(body);
-    //await user.save();
     return res.status(HTTPSTATUS.CREATED).json({
       message: 'Account created successfully',
       success: true,
@@ -45,49 +45,36 @@ export const registereducatorController = AsyncHandler(
   }
 );
 
-// Google registration controllers
+// Google registration/ login starter controller
 export const googleAuthController = passport.authenticate('google', {
   scope: ['profile', 'email'],
 });
 
+// Google registration/ login callback controller
+
 export const googleAuthCallbackController = AsyncHandler(
   async (req, res, next) => {
-    passport.authenticate(
-      'google',
-      { session: false },
-      async (err, profile) => {
-        try {
-          if (err) {
-            return next(err);
-          }
+    const user = req.user;
+    const { accessToken, refreshToken } = await generateJwt(user);
 
-          if (!profile) {
-            return res.status(HTTPSTATUS.UNAUTHORIZED).json({
-              success: false,
-              message: 'Google authentication failed',
-            });
-          }
+    if (!user) {
+      return res.redirect(
+        `${config.FRONTEND_GOOGLE_CALLBACK_URL}?status=failure`
+      );
+    }
 
-          const authResult = await handleGoogleAuth(profile);
-
-          // Set refresh token in HTTP-only cookie
-          res.cookie('refreshToken', authResult.refreshToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-          });
-
-          return res.status(HTTPSTATUS.OK).json({
-            success: true,
-            message: 'Google authentication successful',
-            user: authResult.user,
-            accessToken: authResult.accessToken,
-          });
-        } catch (error) {
-          next(error);
-        }
-      }
-    )(req, res, next);
+    return res
+      .status(HTTPSTATUS.OK)
+      .cookie('jwt', refreshToken, {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      })
+      .json({
+        success: true,
+        message: 'Signed in  successfully',
+        token: accessToken,
+      });
   }
 );

@@ -1,9 +1,8 @@
 import 'dotenv/config';
 import express from 'express';
 import passport from 'passport';
-import session from 'express-session';
-import { config } from './configs/app.config.js';
 import './configs/passport.config.js';
+import { config } from './configs/app.config.js';
 import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
@@ -15,6 +14,9 @@ import errorHandler from './middlewares/errorHandler.middleware.js';
 
 const app = express();
 
+//USE PASSPORT
+app.use(passport.initialize());
+
 // DATABASE CONNECTION
 connectDb();
 
@@ -23,15 +25,6 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  session({
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: true,
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
 
 // REQUEST AND REQ METHOD/URL LOGGER
 app.use((req, res, next) => {
