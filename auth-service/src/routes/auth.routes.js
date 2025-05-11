@@ -1,21 +1,26 @@
 import express from 'express';
-import { forgotPasswordController } from '../controllers/forgotPassword.controller.js';
-import { 
+import {
   registerLearnerController,
-  registereducatorController,
-  googleAuthController,
-  googleAuthCallbackController
-} from '../controllers/register.controller.js';
-
-
+  registerEducatorController,
+  googleAuthCallbackController,
+} from '../controllers/auth.controller.js';
 
 const router = express.Router();
 
-router.post('/forgot-password', forgotPasswordController);
-router.get('/google', googleAuthController);
-router.get('/google/callback', googleAuthCallbackController);
-router.post('/register-educator', registereducatorController);
+// Start Google OAuth
+router.get(
+  '/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+// Handle callback of Google Auth
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { session: false }),
+  googleAuthCallbackController
+);
+
+router.post('/register-educator', registerEducatorController);
 router.post('/register-learner', registerLearnerController);
 
 export default router;
-
