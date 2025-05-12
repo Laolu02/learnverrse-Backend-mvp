@@ -4,9 +4,11 @@ import {
   registerLearnerService,
   registerEducatorService,
 } from '../services/register.service.js';
-import { registerSchema } from '../validations/auth.validation.js';
+import { loginSchema, registerSchema } from '../validations/auth.validation.js';
 
 import generateJwt from '../utils/generateJwt.js';
+import { loginUserService } from '../services/login.service.js';
+import generateJwtToken from '../utils/generateJwt.js';
 
 // Regular registration controller
 export const registerLearnerController = AsyncHandler(
@@ -72,3 +74,30 @@ export const googleAuthCallbackController = AsyncHandler(
       });
   }
 );
+
+// login user (Learner or Educator)
+export const loginUserController = AsyncHandler(async (req, res, next) => {
+  //Validate
+  const credentials = loginSchema.parse({ ...req.body });
+
+  //Fetch & verify
+  const { user } = await loginUserService(credentials);
+
+  //generate JWT
+
+  const { accessToken, refreshToken } = await generateJwtToken(user);
+
+  return res
+    .status(HTTPSTATUS.OK)
+    .cookie('jwt', refreshToken, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    })
+    .json({
+      success: true,
+      message: 'Signed in  successfully',
+      token: accessToken,
+    });
+});

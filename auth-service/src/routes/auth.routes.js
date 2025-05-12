@@ -1,8 +1,10 @@
+import passport from 'passport';
 import express from 'express';
 import {
   registerLearnerController,
   registerEducatorController,
   googleAuthCallbackController,
+  loginUserController,
 } from '../controllers/auth.controller.js';
 
 const router = express.Router();
@@ -22,5 +24,6 @@ router.get(
 
 router.post('/register-educator', registerEducatorController);
 router.post('/register-learner', registerLearnerController);
+router.post('/login', loginUserController);
 
 export default router;

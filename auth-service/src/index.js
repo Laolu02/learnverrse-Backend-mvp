@@ -33,8 +33,7 @@ app.use((req, res, next) => {
 });
 
 // ROUTES
-// app.use('/api/auth', authRoutes);
-// app.use('/api/auth', login.routes.js);
+app.use('/api/auth', authRoutes);
 
 // ERROR HANDLER MIDDLEWARE
 app.use(errorHandler);
