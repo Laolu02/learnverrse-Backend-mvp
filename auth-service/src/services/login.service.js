@@ -1,38 +1,35 @@
 import UserModel from '../model/user.model.js';
 import AccountModel from '../model/account.model.js';
-import { AccountProviderEnum } from '../enums/account-provider.enum.js';
-import { UnauthorizedException } from '../utils/appError.js';
-import bcrypt from 'bcryptjs';
+import { UnauthorizedException, NotFoundException } from '../utils/appError.js';
 
-export const loginLearnerService = async ({ email, password }) => {
+export const loginUserService = async ({ email, password }) => {
   try {
-    const user = await UserModel.findOne({ email });
-
-    if (!user) {
-      throw new UnauthorizedException('Invalid email or password');
-    }
-
-    // Verify account provider is EMAIL
     const account = await AccountModel.findOne({
-      userId: user._id,
-      provider: AccountProviderEnum.EMAIL,
+      provider,
       providerId: email,
+      isVerified: true,
     });
 
     if (!account) {
-      throw new UnauthorizedException('No email account found for this user');
+      throw new NotFoundException('Invalid email or password');
+    }
+    if (account && account.isVerified === false) {
+      throw new UnauthorizedException('Please verify your account');
     }
 
-    // Check password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
+    const user = await UserModel.findById(account.userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found for the given account');
+    }
+
+    const isMatch = await user.verifyPassword(password);
+    if (!isMatch) {
       throw new UnauthorizedException('Invalid email or password');
     }
 
-    // Successful login
-    return { user };
+    return user.omitPassword();
   } catch (error) {
-    logger.error('Error logging in user');
     throw error;
   }
 };
