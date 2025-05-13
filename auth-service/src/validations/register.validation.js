@@ -15,7 +15,3 @@ export const registerSchema = z.object({
   password: passwordSchema,
   age: z.number().min(18, { message: 'You must be at least 18 years old' }),
 });
-
-export const resetPasswordSchema = z.object({
-  email: z.string().email({ message: 'Invalid email address' }),
-});
