@@ -1,15 +1,21 @@
 import 'dotenv/config';
 import express from 'express';
+import passport from 'passport';
+import './configs/passport.config.js';
 import { config } from './configs/app.config.js';
 import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import connectDb from './configs/database.config.js';
 import authRoutes from './routes/auth.routes.js';
+
 import logger from './utils/logger.js';
 import errorHandler from './middlewares/errorHandler.middleware.js';
 
 const app = express();
+
+//USE PASSPORT
+app.use(passport.initialize());
 
 // DATABASE CONNECTION
 connectDb();
