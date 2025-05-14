@@ -1,21 +1,14 @@
 import 'dotenv/config';
 import express from 'express';
-import passport from 'passport';
-import './configs/passport.config.js';
 import { config } from './configs/app.config.js';
 import cors from 'cors';
 import helmet from 'helmet';
-import cookieParser from 'cookie-parser';
 import connectDb from './configs/database.config.js';
-import authRoutes from './routes/auth.routes.js';
 
 import logger from './utils/logger.js';
 import errorHandler from './middlewares/errorHandler.middleware.js';
 
 const app = express();
-
-//USE PASSPORT
-app.use(passport.initialize());
 
 // DATABASE CONNECTION
 connectDb();
@@ -24,7 +17,6 @@ connectDb();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-app.use(cookieParser());
 
 // REQUEST AND REQ METHOD/URL LOGGER
 app.use((req, res, next) => {
@@ -33,8 +25,9 @@ app.use((req, res, next) => {
   next();
 });
 
+console.log(config.PORT);
+
 // ROUTES
-app.use('/api/auth', authRoutes);
 
 // ERROR HANDLER MIDDLEWARE
 app.use(errorHandler);

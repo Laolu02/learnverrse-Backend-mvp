@@ -1,11 +1,12 @@
 import UserModel from '../model/user.model.js';
 import AccountModel from '../model/account.model.js';
 import { UnauthorizedException, NotFoundException } from '../utils/appError.js';
+import { AccountProviderEnum } from '../enums/account-provider.enum.js';
 
 export const loginUserService = async ({ email, password }) => {
   try {
     const account = await AccountModel.findOne({
-      provider,
+      provider: AccountProviderEnum.EMAIL,
       providerId: email,
       isVerified: true,
     });

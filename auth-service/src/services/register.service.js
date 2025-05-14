@@ -3,6 +3,7 @@ import { UserRoleEnum } from '../enums/user-role.enum.js';
 import AccountModel from '../model/account.model.js';
 import UserModel from '../model/user.model.js';
 import { BadRequestException } from '../utils/appError.js';
+import logger from '../utils/logger.js';
 
 export const registerLearnerService = async (body) => {
   const { email, firstName, lastName, password } = body;
