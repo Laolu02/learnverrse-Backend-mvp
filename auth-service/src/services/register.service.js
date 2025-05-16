@@ -39,7 +39,7 @@ export const registerLearnerService = async (body) => {
 
     await account.save();
 
-    return { user };
+    return user;
   } catch (error) {
     logger.error('Error registering new user');
     throw error;
@@ -79,7 +79,7 @@ export const registerEducatorService = async (body) => {
 
     await account.save();
 
-    return { user };
+    return user;
   } catch (error) {
     logger.error('Error registering new user');
     throw error;
