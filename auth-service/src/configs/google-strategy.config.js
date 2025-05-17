@@ -2,6 +2,8 @@ import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 import { googleLoginOrCreateAccountService } from '../services/google-auth.service.js';
 import { config } from './app.config.js';
+import { AccountProviderEnum } from '../enums/account-provider.enum.js';
+import { NotFoundException } from '../utils/appError.js';
 
 export const configureGoogleStrategy = () => {
   passport.use(
@@ -31,7 +33,7 @@ export const configureGoogleStrategy = () => {
           }
 
           const user = await googleLoginOrCreateAccountService({
-            provider: ProviderEnum.GOOGLE,
+            provider: AccountProviderEnum.GOOGLE,
             providerId: googleId,
             email,
             firstName: given_name || profile.name?.givenName,

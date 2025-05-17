@@ -8,6 +8,7 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import connectDb from './configs/database.config.js';
 import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/user.routes.js';
 
 import logger from './utils/logger.js';
 import errorHandler from './middlewares/errorHandler.middleware.js';
@@ -35,6 +36,7 @@ app.use((req, res, next) => {
 
 // ROUTES
 app.use('/api/auth', authRoutes);
+app.use('/api/user', userRoutes);
 
 // ERROR HANDLER MIDDLEWARE
 app.use(errorHandler);

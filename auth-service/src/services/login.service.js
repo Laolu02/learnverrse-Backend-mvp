@@ -1,18 +1,18 @@
 import UserModel from '../model/user.model.js';
 import AccountModel from '../model/account.model.js';
-import { UnauthorizedException, NotFoundException } from '../utils/appError.js';
+import { UnauthorizedException, NotFoundException, BadRequestException } from '../utils/appError.js';
 import { AccountProviderEnum } from '../enums/account-provider.enum.js';
 
 export const loginUserService = async ({ email, password }) => {
   try {
+    console.log(email);
     const account = await AccountModel.findOne({
       provider: AccountProviderEnum.EMAIL,
       providerId: email,
-      isVerified: true,
     });
 
     if (!account) {
-      throw new NotFoundException('Invalid email or password');
+      throw new NotFoundException('Account does not exist');
     }
     if (account && account.isVerified === false) {
       throw new UnauthorizedException('Please verify your account');
@@ -26,10 +26,10 @@ export const loginUserService = async ({ email, password }) => {
 
     const isMatch = await user.verifyPassword(password);
     if (!isMatch) {
-      throw new UnauthorizedException('Invalid email or password');
+      throw new BadRequestException('Invalid email or password');
     }
-
-    return user.omitPassword();
+    const userWithoutPassword = user.omitPassword();
+    return { user: userWithoutPassword };
   } catch (error) {
     throw error;
   }
