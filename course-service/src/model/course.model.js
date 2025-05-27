@@ -3,6 +3,35 @@ import { CourseLevelEnum } from '../enums/course-level.enum.js';
 import { CourseStatusEnums } from '../enums/course-status.enum.js';
 import { CourseSubscriptionEnum } from '../enums/course-subscription.enum.js';
 
+// Comment Schema
+const commentSchema = new Schema({
+  commentId: { type: String, required: true },
+  userId: { type: String, required: true },
+  text: { type: String, required: true },
+  timestamp: { type: String, required: true },
+});
+
+// Chapter Schema
+const chapterSchema = new Schema({
+  chapterId: { type: String, required: true },
+  type: {
+    type: String,
+    enum: ['Text', 'Quiz', 'Video'],
+    required: true,
+  },
+  title: { type: String, required: true },
+  content: { type: String, required: true },
+  video: { type: String },
+});
+
+// Section Schema
+const sectionSchema = new Schema({
+  sectionId: { type: String, required: true },
+  sectionTitle: { type: String, required: true },
+  sectionDescription: { type: String },
+  chapters: [chapterSchema],
+});
+
 const courseSchema = new mongoose.Schema(
   {
     educatorId: {
@@ -40,6 +69,7 @@ const courseSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: Object.values(CourseLevelEnum),
+      required: true,
     },
     status: {
       type: String,
@@ -61,6 +91,7 @@ const courseSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    sections: [sectionSchema],
   },
   { timestamps }
 );

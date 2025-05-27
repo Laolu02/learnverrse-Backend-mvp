@@ -5,15 +5,9 @@ import { UserRoleEnum } from '../enums/user-role.enum.js';
 
 const userSchema = new mongoose.Schema(
   {
-    firstName: {
+    fullName: {
       type: String,
       required: true,
-      trim: true,
-    },
-    lastName: {
-      type: String,
-      required: true,
-      trim: true,
     },
 
     email: {

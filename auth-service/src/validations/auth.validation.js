@@ -2,8 +2,7 @@ import { z } from 'zod';
 
 // common fields
 
-export const firstNameSchema = z.string().trim().min(1).max(255);
-export const lastNameSchema = z.string().trim().min(1).max(255);
+export const fullNameSchema = z.string().trim().min(1).max(255);
 
 export const emailSchema = z
   .string()
@@ -47,8 +46,7 @@ export const profilePictureSchema = z
 // auth validations
 
 export const registerSchema = z.object({
-  firstName: firstNameSchema,
-  lastName: lastNameSchema,
+  fullName: fullNameSchema,
   email: emailSchema,
   password: passwordSchema,
 });
