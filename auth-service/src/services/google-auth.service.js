@@ -4,8 +4,7 @@ import AccountModel from '../model/account.model.js';
 import UserModel from '../model/user.model.js';
 
 export const googleLoginOrCreateAccountService = async (body) => {
-  const { provider, firstName, lastName, providerId, profilePicture, email } =
-    body;
+  const { provider, fullName, providerId, profilePicture, email } = body;
 
   try {
     let user = await UserModel.findOne({ email });
@@ -15,8 +14,7 @@ export const googleLoginOrCreateAccountService = async (body) => {
         provider,
         providerId,
         email,
-        firstName,
-        lastName,
+        fullName,
         profilePicture,
         role: UserRoleEnum.LEARNER,
         isRoleVerified: true, //learner is automatically verified while educator needs admin approval

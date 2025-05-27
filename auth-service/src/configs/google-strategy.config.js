@@ -36,8 +36,7 @@ export const configureGoogleStrategy = () => {
             provider: AccountProviderEnum.GOOGLE,
             providerId: googleId,
             email,
-            firstName: given_name || profile.name?.givenName,
-            lastName: family_name || profile.name?.familyName,
+            fullName: profile.displayName,
             profilePicture: picture,
           });
 

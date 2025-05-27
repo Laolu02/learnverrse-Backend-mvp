@@ -6,7 +6,7 @@ import { BadRequestException } from '../utils/appError.js';
 import logger from '../utils/logger.js';
 
 export const registerLearnerService = async (body) => {
-  const { email, firstName, lastName, password } = body;
+  const { email, fullName, password } = body;
 
   try {
     const isExisting = await UserModel.findOne({ email });
@@ -17,8 +17,7 @@ export const registerLearnerService = async (body) => {
     const user = new UserModel({
       email,
       password,
-      firstName,
-      lastName,
+      fullName,
       role: UserRoleEnum.LEARNER,
       isRoleVerified: true,
     });
@@ -47,7 +46,7 @@ export const registerLearnerService = async (body) => {
 };
 
 export const registerEducatorService = async (body) => {
-  const { email, firstName, lastName, password } = body;
+  const { email, fullName, password } = body;
 
   try {
     const isExisting = await UserModel.findOne({ email });
@@ -58,8 +57,7 @@ export const registerEducatorService = async (body) => {
     const user = new UserModel({
       email,
       password,
-      firstName,
-      lastName,
+      fullName,
       role: UserRoleEnum.EDUCATOR,
     });
 
