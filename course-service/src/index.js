@@ -8,6 +8,7 @@ import connectDb from './configs/database.config.js';
 import logger from './utils/logger.js';
 import errorHandler from './middlewares/errorHandler.middleware.js';
 import { router } from './router/query-route.js';
+import educatorRoutes from './routes/educator.routes.js';
 
 const app = express();
 
@@ -30,6 +31,8 @@ console.log(config.PORT);
 
 // ROUTES
 app.use("/api", router)
+app.use('/api/educator', educatorRoutes);
+
 // ERROR HANDLER MIDDLEWARE
 app.use(errorHandler);
 
