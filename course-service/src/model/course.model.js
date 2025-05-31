@@ -1,4 +1,5 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
+
 import { CourseLevelEnum } from '../enums/course-level.enum.js';
 import { CourseStatusEnums } from '../enums/course-status.enum.js';
 import { CourseSubscriptionEnum } from '../enums/course-subscription.enum.js';
@@ -93,7 +94,7 @@ const courseSchema = new mongoose.Schema(
     },
     sections: [sectionSchema],
   },
-  { timestamps }
+  { timestamps: true }
 );
 
 const CourseModel = mongoose.model('Course', courseSchema);
