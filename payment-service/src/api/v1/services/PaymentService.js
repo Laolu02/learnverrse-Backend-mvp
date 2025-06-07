@@ -1,6 +1,6 @@
-import { Payment } from "../model/paymentModel";
-import { options } from "../../../configs/paystackOptions";
-import { HTTPSTATUS } from "../../../configs/http.config";
+import { Payment } from "../model/paymentModel.js";
+import { options } from "../../../configs/paystackOptions.js";
+
 
 export const findPayment = async (idempotenceId) => {
   try {

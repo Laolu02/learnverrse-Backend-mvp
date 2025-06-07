@@ -4,7 +4,7 @@ import {
   findPayment,
   initializePayment,
   verifyWebHook,
-  verifyPayment
+  verifyReference
 } from "../services/PaymentService.js";
 import { AppError } from "../utils/appError.js";
 import {createHmac} from 'crypto'

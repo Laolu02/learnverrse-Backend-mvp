@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import logger from '../utils/logger.js';
+import logger from '../api/v1/utils/logger.js';
 
 const connectDb = async () => {
   try {

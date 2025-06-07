@@ -8,6 +8,8 @@ import connectDb from '../../configs/database.config.js';
 import logger from './utils/logger.js';
 import errorHandler from './middlewares/errorHandler.middleware.js';
 
+import paymentRoute from './routes/paymentRoute.js'
+
 
 
 
@@ -31,7 +33,7 @@ app.use((req, res, next) => {
 
 // ROUTES
 app.use('api/v1/payment', paymentRoute)
-// app.use('api/v2/payment', paymentRoute);
+
 
 
 // ERROR HANDLER MIDDLEWARE
