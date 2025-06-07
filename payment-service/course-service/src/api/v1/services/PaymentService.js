@@ -1,5 +1,6 @@
 import { Payment } from "../model/paymentModel";
 import { options } from "../../../configs/paystackOptions";
+import { HTTPSTATUS } from "../../../configs/http.config";
 
 export const findPayment = async (idempotenceId) => {
   try {
@@ -76,3 +77,27 @@ export const verifyReference = async (reference) => {
     return;
   }
 };
+
+ export const verifyWebHook = async (body) => {
+	const {event} = body
+	const reference = body.data.reference
+	try {
+		if(event === 'charge.success'){
+		await Payment.findByOneAndUpdate(
+        { reference },
+        { status: "success" },
+        { runValidators: true, new: true }
+		)
+		return body
+	} else {
+		 await Payment.findByOneAndUpdate(
+        { reference },
+        { status: event },
+        { runValidators: true, new: true }
+      );
+	  return body
+	}
+	} catch (error) {
+		console.log('verify hook error', error)
+	}
+ }

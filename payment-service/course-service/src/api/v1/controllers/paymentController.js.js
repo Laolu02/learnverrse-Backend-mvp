@@ -3,8 +3,11 @@ import AsyncHandler from "../middlewares/asyncHandler.js";
 import {
   findPayment,
   initializePayment,
+  verifyWebHook,
+  verifyPayment
 } from "../services/PaymentService.js";
 import { AppError } from "../utils/appError.js";
+import {createHmac} from 'crypto'
 
 export const makePayment = AsyncHandler(async (req, res) => {
   const { email, amount, userId, courseId, idempotenceId } = req.body;
@@ -40,3 +43,17 @@ export const verifyPayment = AsyncHandler(async (req, res) => {
     throw new AppError(response.data.message);
   }
 });
+
+export const webhook = AsyncHandler(async (req, res) => {
+  const paystackSignature = req.headers['x-paystack-signature']
+  const paystackHash = createHmac('sha512', process.env.PAYSTACK_SECRET_KEY).update(req.body).digest('hex')
+  if(paystackHash !== paystackSignature){
+    throw new AppError('Invalid signature')
+  }
+  const response =  await verifyWebHook(JSON.parse(req.body))
+  if(response.event === 'charge.success'){
+   return res.status(HTTPSTATUS.OK).send(200)
+  } else {
+    throw new AppError(response.reason)
+  }
+})
