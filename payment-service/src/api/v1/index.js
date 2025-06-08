@@ -1,17 +1,14 @@
-import 'dotenv/config';
-import express from 'express';
-import { config } from '../../configs/app.config.js';
-import cors from 'cors';
-import helmet from 'helmet';
-import connectDb from '../../configs/database.config.js';
+import "dotenv/config";
+import express from "express";
+import { config } from "../../configs/app.config.js";
+import cors from "cors";
+import helmet from "helmet";
+import connectDb from "../../configs/database.config.js";
 
-import logger from './utils/logger.js';
-import errorHandler from './middlewares/errorHandler.middleware.js';
+import logger from "./utils/logger.js";
+import errorHandler from "./middlewares/errorHandler.middleware.js";
 
-import paymentRoute from './routes/paymentRoute.js'
-
-
-
+import paymentRoute from "./routes/paymentRoute.js";
 
 const app = express();
 
@@ -23,7 +20,6 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-
 // REQUEST AND REQ METHOD/URL LOGGER
 app.use((req, res, next) => {
   logger.info(`Received ${req.method} from ${req.url}`);
@@ -32,9 +28,7 @@ app.use((req, res, next) => {
 });
 
 // ROUTES
-app.use('api/v1/payment', paymentRoute)
-
-
+app.use("/api/v1/payment", paymentRoute);
 
 // ERROR HANDLER MIDDLEWARE
 app.use(errorHandler);
@@ -45,6 +39,6 @@ app.listen(config.PORT, () => {
 });
 
 // UNHANDLED EXCEPTIONS HANDLERS
-process.on('unhandledRejection', (reason, promise) => {
-  logger.error('Unhandled Rejection at', promise, 'reason:', reason);
+process.on("unhandledRejection", (reason, promise) => {
+  logger.error("Unhandled Rejection at", promise, "reason:", reason);
 });

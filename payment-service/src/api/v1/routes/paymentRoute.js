@@ -4,9 +4,9 @@ import { auth } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-router.post("/", auth, makePayment);
+router.post("/",auth, makePayment);
 
-router.get("/verify/:id", auth, verifyPayment);
+router.get("/verify/:id", auth,verifyPayment);
 
 router.use('/webhook', 
 	express.raw({type: 'application/json'})

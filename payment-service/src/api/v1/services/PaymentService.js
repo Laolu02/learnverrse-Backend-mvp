@@ -1,5 +1,6 @@
 import { Payment } from "../model/paymentModel.js";
 import { options } from "../../../configs/paystackOptions.js";
+import axios from 'axios';
 
 
 export const findPayment = async (idempotenceId) => {
@@ -23,11 +24,11 @@ export const createPayment = async (body) => {
 };
 
 export const initializePayment = async (body) => {
-  const { email, paystackAmount, userId, courseId, idempotenceId } = body;
+  const { email, amount, userId, courseId, idempotenceId } = body;
   try {
     const params = JSON.stringify({
       email,
-      paystackAmount,
+      amount,
     });
 
     const response = await axios.post(
@@ -38,7 +39,7 @@ export const initializePayment = async (body) => {
     const { reference } = response.data.data;
     await createPayment({
       email,
-      amount: paystackAmount,
+      amount,
       userId,
       courseId,
       idempotenceId,
