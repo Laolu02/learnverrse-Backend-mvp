@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment Callback</title>
+</head>
+<body>
+  <h2>Verifying your payment...</h2>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const reference = urlParams.get('reference');
+
+    if (!reference) {
+      document.body.innerHTML = '<h3>No payment reference found!</h3>';
+    } else {
+      // Optionally call your backend to verify status
+      document.body.innerHTML = `
+        <h3>Thank you!</h3>
+        <p>Your payment reference: <strong>${reference}</strong></p>
+        <p>You will receive confirmation shortly.</p>
+      `;
+    }
+  </script>
+</body>
+</html>
